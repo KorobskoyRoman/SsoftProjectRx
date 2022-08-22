@@ -20,7 +20,15 @@ class RxCreating {
      - returns: Результирующая последовательность с value
     */
     func convertToObservable(value: Int) -> Observable<Int> {
-        return .error(NotImplemetedError())
+        Observable<Int>.create { obs in
+            if value <= 0 {
+                obs.onNext(value)
+            } else {
+                obs.onNext(value)
+                obs.onCompleted()
+            }
+            return Disposables.create()
+        }
     }
     
     /**
@@ -29,7 +37,13 @@ class RxCreating {
      - returns: Результирующая последовательность с элементами массива
     */
     func arrayToObservable<T>(_ array: [T]) -> Observable<T> {
-        return .error(NotImplemetedError())
+
+        let obs = Observable<T>.create { el in
+            array.forEach { el.onNext($0) }
+            el.onCompleted()
+            return Disposables.create()
+        }
+        return obs
     }
     
     /**
@@ -40,8 +54,18 @@ class RxCreating {
      - attention: Для решения этого задания потребуются знания операторов комбинирования (RxCombining)
      - returns: Результирующая последовательность с элементами массива
     */
-    func arrayToObservableWithTimer<T>(_ array: [T], scheduler: SchedulerType) -> Observable<T> {
-        return .error(NotImplemetedError())
+    func arrayToObservableWithTimer<T>(_ array: [T], scheduler: SchedulerType) -> Observable<T> where T: FixedWidthInteger {
+        let result = Observable<T>.create { el in
+            array.forEach { el.onNext($0)}
+            el.onCompleted()
+            return Disposables.create()
+        }
+
+        let obs = Observable.from(array)
+            .concatMap { _ in result.delay(.seconds(1), scheduler: scheduler) }
+            .take(array.count)
+
+        return obs
     }
     
     /**
@@ -50,7 +74,11 @@ class RxCreating {
      - returns: Результирующая последовательность с элементами результата вызова expensiveMethod()
     */
     func expensiveMethodResult() -> Observable<Int> {
-        return .error(NotImplemetedError())
+//        return .error(NotImplemetedError())
+        let obs = Observable<Int>.deferred {
+            Observable.of(self.someService.expensiveMethod())
+        }
+        return obs
     }
     
     /**
@@ -63,7 +91,38 @@ class RxCreating {
      3. unstableMethod(unstableCondition:)
     */
     func combinationExpensiveMethods(unstableCondition: Bool) -> Observable<Int> {
-        return .error(NotImplemetedError())
+//        return .error(NotImplemetedError())
+//        let obs = Observable<Int>.deferred {
+//            let obs = Observable<Int>.of(self.someService.expensiveMethod(),
+//                                         self.someService.anotherExpensiveMethod())
+//            //                let obs = Observable<Int>.of(self.someService.expensiveMethod(),
+//            //                                             self.someService.anotherExpensiveMethod(),
+//            //                                             try self.someService.unstableMethod(unstableCondition: unstableCondition))
+//            let obs2 = Observable<Int>.of(try self.someService.unstableMethod(unstableCondition: unstableCondition))
+//            let compl = Observable<Int>.of()
+//                .concat(obs)
+//                .concat(obs2)
+//            return compl
+//        }
+//        return obs
+        let obs = Observable<Int>.deferred {
+            _ = Observable.deferred {
+                .of(self.someService.expensiveMethod())
+                .map { return $0 }
+            }
+//            .map { return $0 }
+            _ = Observable.deferred {
+                .of(self.someService.anotherExpensiveMethod())
+                .map { return $0 }
+            }
+//            .map { return $0 }
+            _ = Observable.deferred {
+                .of(try self.someService.unstableMethod(unstableCondition: unstableCondition))
+                .map { return $0 }
+            }
+//            .map { return $0 }
+        }
+        return obs
     }
 }
 
