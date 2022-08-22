@@ -7,6 +7,8 @@
 //
 
 import RxSwift
+import RxRelay
+import RxCocoa
 
 class RxCreating {
     var someService = SomeService()

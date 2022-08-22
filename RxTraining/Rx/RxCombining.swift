@@ -7,6 +7,8 @@
 //
 
 import RxSwift
+import RxRelay
+import RxCocoa
 
 class RxCombining {
     /**
@@ -19,7 +21,10 @@ class RxCombining {
       результирующую последовательность тоже сработает этот метод.
      */
     func sum(firstIntObservable: Observable<Int>, secondIntObservable: Observable<Int>) -> Observable<Int> {
-        return .error(NotImplemetedError())
+        let obs = Observable.zip(firstIntObservable,secondIntObservable)
+            .map {$0 + $1}
+
+        return obs
     }
     
     /**

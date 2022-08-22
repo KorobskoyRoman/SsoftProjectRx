@@ -14,13 +14,13 @@
 		1F0C97B723BA08C600BC9C66 /* RxTraitsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0C97B623BA08C600BC9C66 /* RxTraitsTest.swift */; };
 		1F0C97B923BA2B6200BC9C66 /* RxAdvanced.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0C97B823BA2B6200BC9C66 /* RxAdvanced.swift */; };
 		1F0C97BD23BA30EC00BC9C66 /* RxAdvancedTraining.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0C97BC23BA30EC00BC9C66 /* RxAdvancedTraining.swift */; };
+		1F11570023B5E07B00A8E90B /* RxTransforming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1156FF23B5E07B00A8E90B /* RxTransforming.swift */; };
+		1F11570223B5E49300A8E90B /* RxTransformingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F11570123B5E49300A8E90B /* RxTransformingTest.swift */; };
 		1F16338623B331AA00966149 /* RxCreating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F16338523B331AA00966149 /* RxCreating.swift */; };
 		1F16338C23B3793300966149 /* RxCreatingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F16338B23B3793300966149 /* RxCreatingTest.swift */; };
 		1F16338E23B39AB700966149 /* ExpectedError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F16338D23B39AB700966149 /* ExpectedError.swift */; };
 		1F16339023B47CE800966149 /* RxFiltering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F16338F23B47CE800966149 /* RxFiltering.swift */; };
 		1F16339423B483AF00966149 /* RxFilteringTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F16339323B483AF00966149 /* RxFilteringTest.swift */; };
-		1F11570023B5E07B00A8E90B /* RxTransforming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1156FF23B5E07B00A8E90B /* RxTransforming.swift */; };
-		1F11570223B5E49300A8E90B /* RxTransformingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F11570123B5E49300A8E90B /* RxTransformingTest.swift */; };
 		1F5AE73623B0D22D005119AE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5AE73523B0D22D005119AE /* AppDelegate.swift */; };
 		1F5AE73A23B0D22D005119AE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5AE73923B0D22D005119AE /* ViewController.swift */; };
 		1F5AE73D23B0D22D005119AE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F5AE73B23B0D22D005119AE /* Main.storyboard */; };
@@ -52,13 +52,13 @@
 		1F0C97B623BA08C600BC9C66 /* RxTraitsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxTraitsTest.swift; sourceTree = "<group>"; };
 		1F0C97B823BA2B6200BC9C66 /* RxAdvanced.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxAdvanced.swift; sourceTree = "<group>"; };
 		1F0C97BC23BA30EC00BC9C66 /* RxAdvancedTraining.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxAdvancedTraining.swift; sourceTree = "<group>"; };
+		1F1156FF23B5E07B00A8E90B /* RxTransforming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxTransforming.swift; sourceTree = "<group>"; };
+		1F11570123B5E49300A8E90B /* RxTransformingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxTransformingTest.swift; sourceTree = "<group>"; };
 		1F16338523B331AA00966149 /* RxCreating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxCreating.swift; sourceTree = "<group>"; };
 		1F16338B23B3793300966149 /* RxCreatingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxCreatingTest.swift; sourceTree = "<group>"; };
 		1F16338D23B39AB700966149 /* ExpectedError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpectedError.swift; sourceTree = "<group>"; };
 		1F16338F23B47CE800966149 /* RxFiltering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxFiltering.swift; sourceTree = "<group>"; };
 		1F16339323B483AF00966149 /* RxFilteringTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxFilteringTest.swift; sourceTree = "<group>"; };
-		1F1156FF23B5E07B00A8E90B /* RxTransforming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxTransforming.swift; sourceTree = "<group>"; };
-		1F11570123B5E49300A8E90B /* RxTransformingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxTransformingTest.swift; sourceTree = "<group>"; };
 		1F5AE73223B0D22D005119AE /* RxTraining.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxTraining.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F5AE73523B0D22D005119AE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1F5AE73923B0D22D005119AE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -239,7 +239,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1120;
-				LastUpgradeCheck = 1120;
+				LastUpgradeCheck = 1340;
 				ORGANIZATIONNAME = Aleksandr;
 				TargetAttributes = {
 					1F5AE73123B0D22D005119AE = {
@@ -427,6 +427,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -487,6 +488,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;

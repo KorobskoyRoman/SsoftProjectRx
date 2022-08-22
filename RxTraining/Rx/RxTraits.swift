@@ -8,6 +8,7 @@
 
 import RxSwift
 import RxCocoa
+import RxRelay
 
 class RxTraits {
     var shouldThrow = false
