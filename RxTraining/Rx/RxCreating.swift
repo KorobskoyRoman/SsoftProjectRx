@@ -91,36 +91,15 @@ class RxCreating {
      3. unstableMethod(unstableCondition:)
     */
     func combinationExpensiveMethods(unstableCondition: Bool) -> Observable<Int> {
-//        return .error(NotImplemetedError())
-//        let obs = Observable<Int>.deferred {
-//            let obs = Observable<Int>.of(self.someService.expensiveMethod(),
-//                                         self.someService.anotherExpensiveMethod())
-//            //                let obs = Observable<Int>.of(self.someService.expensiveMethod(),
-//            //                                             self.someService.anotherExpensiveMethod(),
-//            //                                             try self.someService.unstableMethod(unstableCondition: unstableCondition))
-//            let obs2 = Observable<Int>.of(try self.someService.unstableMethod(unstableCondition: unstableCondition))
-//            let compl = Observable<Int>.of()
-//                .concat(obs)
-//                .concat(obs2)
-//            return compl
-//        }
-//        return obs
-        let obs = Observable<Int>.deferred {
-            _ = Observable.deferred {
-                .of(self.someService.expensiveMethod())
-                .map { return $0 }
+        let obs = Observable<Int>.create { sub in
+            sub.onNext(self.someService.expensiveMethod())
+            sub.onNext(self.someService.anotherExpensiveMethod())
+            do {
+                sub.onNext(try self.someService.unstableMethod(unstableCondition: unstableCondition))
+            } catch {
+                sub.onError(ExpectedError())
             }
-//            .map { return $0 }
-            _ = Observable.deferred {
-                .of(self.someService.anotherExpensiveMethod())
-                .map { return $0 }
-            }
-//            .map { return $0 }
-            _ = Observable.deferred {
-                .of(try self.someService.unstableMethod(unstableCondition: unstableCondition))
-                .map { return $0 }
-            }
-//            .map { return $0 }
+            return Disposables.create()
         }
         return obs
     }
