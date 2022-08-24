@@ -103,10 +103,11 @@ class RxFiltering {
         
                 return Observable<[String]>.just(searchCatalog)
                     .concat(Observable<[String]>.error(NotImplemetedError()))
-//        let source = Observable.just(searchCatalog)
+//        let source = Observable.just(searchStringObservable)
 //            .map {
 //                $0.filter{ $0.hasPrefix(searchStringObservable)}
 //            }
+
 //        return source
     }
     /**
@@ -117,8 +118,11 @@ class RxFiltering {
      - returns: Результирующая последовательность
      */
     func releaseElementWhenSwitched<T>(source: Observable<T>, switcher: Observable<Bool>) -> Observable<T> {
-        return .error(NotImplemetedError())
-//        source
-//            .takeLast(1)
+//        return .error(NotImplemetedError())
+        Observable
+            .combineLatest(switcher.startWith(true), source)
+            .filter {$0.0 == true}
+            .map {$0.1}
+
     }
 }
