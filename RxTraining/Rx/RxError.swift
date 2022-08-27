@@ -20,7 +20,7 @@ class RxError {
      - returns: Результирующая последовательность
     */
     func handleErrorWithDefault<T>(source: Observable<T>, defaultValue: T) -> Observable<T> {
-        return .error(NotImplemetedError())
+        source.catchErrorJustReturn(defaultValue)
     }
     
     /**
@@ -31,7 +31,7 @@ class RxError {
      - returns: Результирующая последовательность
     */
     func ifErrorThenSwitch<T>(source: Observable<T>, onError: Observable<T>) -> Observable<T> {
-        return .error(NotImplemetedError())
+        source.catchError { _ in onError }
     }
     
     /**
@@ -42,7 +42,14 @@ class RxError {
      - returns: Результирующая последовательность
     */
     func tryIfNeeded<T>(source: Observable<T>) -> Observable<T> {
-        return .error(NotImplemetedError())
+        source.catchError { error in
+            if error as! FixableError == FixableError.fixable {
+                source.retry()
+                return source
+            } else {
+                return source
+            }
+        }
     }
     
     /**
@@ -53,6 +60,8 @@ class RxError {
      - returns: Результирующая последовательность
     */
     func tryUntil<T>(source: Observable<T>, filter: @escaping (T) -> Bool) -> Observable<T> {
-        return .error(NotImplemetedError())
+        source
+            .filter { filter($0) }
+            .retry()
     }
 }
