@@ -19,7 +19,15 @@ class RxTraits {
      - returns: Результирующая последовательность Single
     */
     func receiveUserInfo() -> Single<UserInfo> {
-        return .error(NotImplemetedError())
+        Single.create { single in
+            let disposable = Disposables.create()
+            do {
+                single(.success(try self.getUserInfo()))
+            } catch {
+                single(.error(error))
+            }
+            return disposable
+        }
     }
     
     /**
@@ -28,7 +36,17 @@ class RxTraits {
      - returns: Результирующая последовательность Completable
     */
     func sendAnalytics() -> Completable {
-        return .error(NotImplemetedError())
+//        return .error(NotImplemetedError())
+        Completable.create { compl in
+            let disposable = Disposables.create()
+            do {
+                try self.sendAnalyticsInfo()
+                compl(.completed)
+            } catch {
+                compl(.error(error))
+            }
+            return disposable
+        }
     }
     
     /**
@@ -40,7 +58,17 @@ class RxTraits {
      - returns: Результирующая последовательность Maybe
     */
     func getNext(afterInt: Int) -> Maybe<Int> {
-        return .error(NotImplemetedError())
+        Maybe.create { maybe in
+            let disposable = Disposables.create()
+            if afterInt == 9 {
+                maybe(.completed)
+            } else if afterInt >= 10 {
+                maybe(.error(ExpectedError()))
+            } else {
+                maybe(.success(afterInt + 1))
+            }
+            return disposable
+        }
     }
     
     /**
@@ -50,7 +78,8 @@ class RxTraits {
      - returns: Результирующая последовательность SharedSequence
     */
     func getModels() -> SharedSequence<DriverSharingStrategy, [String]> {
-        return .just([])
+         loadModels()
+            .asDriver(onErrorJustReturn: [])
     }
     
     /**
@@ -60,7 +89,12 @@ class RxTraits {
      - returns: Результирующая последовательность SharedSequence
     */
     func focusPasswordField() -> SharedSequence<SignalSharingStrategy, Bool> {
-        return .just(false)
+//        return .just(false)
+        Observable.create { sub in
+            sub.onNext(true)
+            return Disposables.create()
+        }
+        .asSignal(onErrorJustReturn: false)
     }
 }
 
