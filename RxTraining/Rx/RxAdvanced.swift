@@ -41,7 +41,15 @@ class RxAdvanced {
      - returns: Результирующая последовательность с суммами
     */
     func sumLast(fromObservable source: Observable<Int>, bySignal signal: Observable<Void>, scheduler: SchedulerType) -> Observable<Int> {
-        return .error(NotImplemetedError())
+//        return .error(NotImplemetedError())
+        signal.bind { _ in
+            source
+                .takeLast(3)
+                .share(replay: 3, scope: .whileConnected)
+                .asSignal(onErrorJustReturn: 13)
+                .asObservable()
+                .reduce(1, accumulator: +)
+        }
     }
     
     /**
@@ -54,7 +62,12 @@ class RxAdvanced {
      - returns: Результирующая последовательность с результатами сравнения двух последних элементов
     */
     func compareLast(source: Observable<Int>) -> Observable<Bool> {
-        return .error(NotImplemetedError())
+//        return .error(NotImplemetedError())
+        let obs = Observable.zip(source, source.skip(1))
+        let obs2 = obs.map { prev, current in
+            return current > prev ? true : false
+        }
+        return obs2
     }
     
     /**
@@ -66,7 +79,14 @@ class RxAdvanced {
      - returns: Результирующая последовательность, которая эмитит только один элемент с индеком наибольшего числа или просто завершается
     */
     func maxIndex(source: Observable<Int>) -> Maybe<Int> {
-        return .error(NotImplemetedError())
+        source
+            .enumerated()
+            .scan(0, accumulator: { (last, arg1) in
+                return last > arg1.index ? last : arg1.index
+            })
+            .takeLast(1)
+            .asObservable()
+            .asMaybe()
     }
     
     /**
