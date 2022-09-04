@@ -101,14 +101,30 @@ class RxFiltering {
         // Каталог, в котором необходимо осуществлять поиск строк
         let searchCatalog = ["unicorns", "popcorn", "corn", "porridge", "pork", "portal"]
         
-                return Observable<[String]>.just(searchCatalog)
-                    .concat(Observable<[String]>.error(NotImplemetedError()))
+//                return Observable<[String]>.just(searchCatalog)
+//                    .concat(Observable<[String]>.error(NotImplemetedError()))
 //        let source = Observable.just(searchStringObservable)
 //            .map {
-//                $0.filter{ $0.hasPrefix(searchStringObservable)}
+//                $0.filter{ $0.hasPrefix(searchCatalog[$0]) }
 //            }
 
 //        return source
+//        let searchObs = Observable<[String]>.create {
+//            $0.onNext(searchCatalog)
+//            return Disposables.create()
+//        }
+
+        let searchObs = Observable<[String]>.just(searchCatalog)
+//            .throttle(waitingTime, scheduler: scheduler)
+//            .map {
+//                $0.filter { $0.hasPrefix("p") }
+//            }
+
+        let res = Observable.zip(searchObs, searchStringObservable)
+            .throttle(waitingTime, scheduler: scheduler)
+            .filter { $0.0.contains($0.1) }
+            .map { $0.0 }
+        return res
     }
     /**
      Каждый раз, когда switcher испускает false, а затем true (или если true первый элемент),
@@ -119,10 +135,20 @@ class RxFiltering {
      */
     func releaseElementWhenSwitched<T>(source: Observable<T>, switcher: Observable<Bool>) -> Observable<T> {
 //        return .error(NotImplemetedError())
-        Observable
-            .combineLatest(switcher.startWith(true), source)
-            .filter {$0.0 == true}
-            .map {$0.1}
+//        Observable
+//            .combineLatest(switcher.startWith(true), source)
+//            .filter {$0.0 == true}
+//            .map {$0.1}
 
+//        Observable
+//            .combineLatest(switcher.distinctUntilChanged(), source.sample(switcher))
+////            .sample(switcher)
+//            .filter { $0.0 == true }
+//            .map { $0.1 }
+
+        Observable.combineLatest(switcher.distinctUntilChanged(), source.sample(switcher))
+            .sample(source)
+            .filter { $0.0 == true }
+            .map { $0.1 }
     }
 }
