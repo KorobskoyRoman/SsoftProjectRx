@@ -61,7 +61,39 @@ class RxError {
     */
     func tryUntil<T>(source: Observable<T>, filter: @escaping (T) -> Bool) -> Observable<T> {
         source
-            .filter { filter($0) }
-            .retry()
+//            .filter { filter($0) }
+//            .filter { element in
+//                if filter(element) {
+//                    return true
+//                } else {
+//                    source.do(onNext: { _ in FixableError.fixable }).retry()
+//                    return false
+//                }
+//            }
+//            .retry()
+//            .retry()
+//            .filter { filter($0) }
+//            .retry()
+//            .retryWhen { e in
+//                return e.enumerated()
+//                    .flatMap {
+//                        if !filter($0) {
+//                            return Observable.error(RxError.unknown)
+//                        }
+//                        return Observable<T>.of($0)
+//                    }
+//            }
+            .retryWhen { _ in // костыль
+                source.filter { filter($0) }
+                    .retryWhen { _ in
+                        source.filter { filter($0) }
+                            .retryWhen { _ in
+                                source.filter { filter($0) }
+                                    .retryWhen { _ in
+                                        source.filter { filter($0) }
+                                    }
+                            }
+                    }
+            }
     }
 }
