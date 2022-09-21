@@ -102,10 +102,6 @@ class RxCombining {
     - returns: Результирующая последовательность
     */
     func switchWhenNeeded<E>(source: Observable<E>, another: Observable<E>) -> Observable<E> {
-//        return .error(NotImplemetedError())
-//        source.flatMapLatest { value -> Observable in another
-//                .map { $0 }
-//        }
-        source.flatMapLatest { _ in another }
+        Observable.merge(source.takeUntil(another), another)
     }
 }
