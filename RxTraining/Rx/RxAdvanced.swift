@@ -7,6 +7,8 @@
 //
 
 import RxSwift
+import RxRelay
+import RxCocoa
 
 class RxAdvanced {
     
@@ -39,7 +41,15 @@ class RxAdvanced {
      - returns: Результирующая последовательность с суммами
     */
     func sumLast(fromObservable source: Observable<Int>, bySignal signal: Observable<Void>, scheduler: SchedulerType) -> Observable<Int> {
-        return .error(NotImplemetedError())
+//        return .error(NotImplemetedError())
+        signal.bind { _ in
+            source
+                .takeLast(3)
+                .share(replay: 3, scope: .whileConnected)
+                .asSignal(onErrorJustReturn: 13)
+                .asObservable()
+                .reduce(1, accumulator: +)
+        }
     }
     
     /**
@@ -52,7 +62,12 @@ class RxAdvanced {
      - returns: Результирующая последовательность с результатами сравнения двух последних элементов
     */
     func compareLast(source: Observable<Int>) -> Observable<Bool> {
-        return .error(NotImplemetedError())
+//        return .error(NotImplemetedError())
+        let obs = Observable.zip(source, source.skip(1))
+        let obs2 = obs.map { prev, current in
+            return current > prev ? true : false
+        }
+        return obs2
     }
     
     /**
@@ -64,7 +79,47 @@ class RxAdvanced {
      - returns: Результирующая последовательность, которая эмитит только один элемент с индеком наибольшего числа или просто завершается
     */
     func maxIndex(source: Observable<Int>) -> Maybe<Int> {
-        return .error(NotImplemetedError())
+//        source
+//            .enumerated()
+//            .scan(0, accumulator: { (last, arg1) in
+//                return last > arg1.index ? last : arg1.index
+//            })
+//        Observable.zip(source, source.skip(1))
+//            .enumerated()
+//            .takeLast(1)
+//            .asObservable()
+//            .asMaybe()
+//        source
+//            .enumerated()
+//            .scan(0, accumulator: { last, new in
+//                return last > new.element ? last : new.index
+//            })
+//            .map { $0 }
+//            .takeLast(1)
+//            .asMaybe()
+        source
+            .enumerated()
+            .withPrevious()
+//            .map { $0.0?.element ?? 0 > $0.1.element ? $0.0?.index ?? 0 : $0.1.index }
+//            .map({ old, new in
+////                return (old?.element ?? 0) > new.element ? (old?.index ?? 0) : new.index
+//                if old?.element ?? 0 < new.element {
+//                    return new.index
+//                }
+//                return 0
+//            })
+//            .map({ old, new in
+//                if old?.element ?? 0 < new.element {
+//                    return new.element
+//                } else {
+//                    source.skip(1)
+//                    return 0
+//                }
+//            })
+//            .takeLast(1)
+            .takeWhile { $0.1.element > $0.0?.element ?? 0 }
+            .map {$0.1.index}
+            .asMaybe()
     }
     
     /**
@@ -91,4 +146,15 @@ extension RxAdvanced {
         let id: Int
         var enabled: Bool
     }
+}
+
+extension ObservableType {
+    func withPrevious() -> Observable<(Element?, Element)> {
+        return scan([], accumulator: { (previous, current) in
+            Array(previous + [current]).suffix(2)
+          })
+          .map({ (arr) -> (previous: Element?, current: Element) in
+            (arr.count > 1 ? arr.first : nil, arr.last!)
+          })
+      }
 }

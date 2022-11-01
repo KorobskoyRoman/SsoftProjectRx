@@ -7,6 +7,8 @@
 //
 
 import RxSwift
+import RxRelay
+import RxCocoa
 
 class RxCombining {
     /**
@@ -19,7 +21,10 @@ class RxCombining {
       результирующую последовательность тоже сработает этот метод.
      */
     func sum(firstIntObservable: Observable<Int>, secondIntObservable: Observable<Int>) -> Observable<Int> {
-        return .error(NotImplemetedError())
+        let obs = Observable.zip(firstIntObservable,secondIntObservable)
+            .map {$0 + $1}
+
+        return obs
     }
     
     /**
@@ -39,8 +44,26 @@ class RxCombining {
             ["shirt", "shoes", "dress", "bra", "pant", "bowler", "skirt"],
             ["table", "sofa", "stool", "throne", "bed", "bar"]
         ]
-        
-        return .just(categories[0])
+        let obs = Observable
+            .combineLatest(searchObservable, categoryObservable)
+            .map({ string, index -> [String] in
+                guard index <= categories.count-1 else { return [] }
+                if string == "" {
+                    return categories[index]
+                }
+                if categories[index].contains(where: { str in
+                    str.contains(string)
+                }) {
+                    var arr = categories[index]
+                    arr.removeAll(where: { !$0.contains(string)})
+                    return arr
+                }
+                else {
+                    return []
+                }
+            })
+
+        return obs
     }
     
     /**
@@ -50,7 +73,9 @@ class RxCombining {
     - returns: Observable который дублирует элементы как из intObservable1, так и intObservable2
     */
     func composition(intObservable1: Observable<Int>, intObservable2: Observable<Int>) -> Observable<Int> {
-        return .error(NotImplemetedError())
+        let obs = Observable<Int>
+            .merge(intObservable2, intObservable1)
+        return obs
     }
     
     /**
@@ -61,7 +86,12 @@ class RxCombining {
       элементы из последовательности intObservable
     */
     func prependItem(_ firstItem: Int, toObservable: Observable<Int>) -> Observable<Int> {
-        return .error(NotImplemetedError())
+//        return .error(NotImplemetedError())
+        let obsItems = Observable.of(firstItem)
+        let obs = Observable
+            .concat(obsItems, toObservable)
+
+        return obs
     }
     
     /**
@@ -72,6 +102,6 @@ class RxCombining {
     - returns: Результирующая последовательность
     */
     func switchWhenNeeded<E>(source: Observable<E>, another: Observable<E>) -> Observable<E> {
-        return .error(NotImplemetedError())
+        Observable.merge(source.takeUntil(another), another)
     }
 }

@@ -7,6 +7,8 @@
 //
 
 import RxSwift
+import RxRelay
+import RxCocoa
 
 class RxTransforming {
     
@@ -16,7 +18,7 @@ class RxTransforming {
      - returns: Результирующая последовательность
     */
     func transformIntToString(source: Observable<Int>) -> Observable<String> {
-        return .error(NotImplemetedError())
+        source.map {"\($0)"}
     }
     
     /**
@@ -26,7 +28,9 @@ class RxTransforming {
      - returns: Результирующая последовательность
     */
     func loadEntityById(idObservable: Observable<Int>) -> Observable<Entity> {
-        return .error(NotImplemetedError())
+        idObservable.flatMap { element in
+            self.requestEntityBy(id: element)
+        }
     }
     
     /**
@@ -38,7 +42,11 @@ class RxTransforming {
     func distributeNamesByFirstLetter(
         source: Observable<String>
     ) -> Observable<GroupedObservable<Character, String>> {
-        return .error(NotImplemetedError())
+        source
+            .groupBy { str in
+                str.first ?? Character("")
+            }
+
     }
     
     /**
@@ -55,7 +63,8 @@ class RxTransforming {
         count: Int,
         scheduler: SchedulerType
     ) -> Observable<[T]> {
-        return .error(NotImplemetedError())
+        source
+            .buffer(timeSpan: .never, count: count, scheduler: scheduler)
     }
 }
 
